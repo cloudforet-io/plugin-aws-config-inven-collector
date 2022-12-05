@@ -25,6 +25,7 @@ _METADATA = {
                     'fields': [
                         {
                             'type': 'enum',
+                            'name': 'Status',
                             'key': 'data.status',
                             'options': {
                                 'FAILED': {
@@ -48,8 +49,8 @@ _METADATA = {
                         },
                         {
                             'type': 'integer',
-                            'key': 'data.failed_count',
-                            'name': 'Failed count'
+                            'key': 'data.failed_resource_count',
+                            'name': 'Failed Resources'
                         }
                     ]
                 }
@@ -74,6 +75,11 @@ _METADATA = {
                                 'name': 'value'
                             }
                         }
+                    ],
+                    'filter': [
+                        {'key': 'provider', 'value': 'aws', 'operator': 'eq'},
+                        {'key': 'cloud_service_group', 'value': 'Compliance', 'operator': 'eq'},
+                        {'key': 'cloud_service_type', 'value': 'CIS-AWS-1.4', 'operator': 'eq'},
                     ]
                 }
             },
@@ -97,39 +103,10 @@ _METADATA = {
                         }
                     ],
                     'filter': [
-                        {
-                            'key': 'data.status',
-                            'value': 'FAILED',
-                            'operator': 'eq'
-                        }
-                    ]
-                }
-            },
-            {
-                'name': 'Failed Count',
-                'type': 'summary',
-                'options': {
-                    'value_options': {
-                        'key': 'value',
-                        'options': {
-                            'default': 0
-                        }
-                    }
-                },
-                'query': {
-                    'aggregate': [
-                        {
-                            'count': {
-                                'name': 'value'
-                            }
-                        }
-                    ],
-                    'filter': [
-                        {
-                            'key': 'data.status',
-                            'value': 'FAILED',
-                            'operator': 'eq'
-                        }
+                        {'key': 'data.status', 'value': 'FAILED', 'operator': 'eq'},
+                        {'key': 'provider', 'value': 'aws', 'operator': 'eq'},
+                        {'key': 'cloud_service_group', 'value': 'Compliance', 'operator': 'eq'},
+                        {'key': 'cloud_service_type', 'value': 'CIS-AWS-1.4', 'operator': 'eq'},
                     ]
                 }
             },

@@ -97,7 +97,7 @@ class AWSConfigManager(CollectorManager):
         for item in rules:
             config_rule = config_rule_map.get(item['ConfigRuleName'], {})
             evaluation_results = evaluation_results_map.get(item['ConfigRuleName'], [])
-            results_info, failed_count = self._get_evaluation_results(evaluation_results)
+            results_info, failed_resource_count = self._get_evaluation_results(evaluation_results)
             resource_data = {
                 'name': item['ConfigRuleName'],
                 'reference': {
@@ -110,7 +110,7 @@ class AWSConfigManager(CollectorManager):
                     },
                     'conformance_pack': pack_info,
                     'resources': results_info,
-                    'failed_count': failed_count
+                    'failed_resource_count': failed_resource_count
                 },
                 'region_code': self.region_name,
                 'account': account_id
@@ -124,10 +124,10 @@ class AWSConfigManager(CollectorManager):
     @staticmethod
     def _get_evaluation_results(evaluation_results: List[dict]) -> [List[dict], int]:
         results_info = []
-        failed_count = 0
+        failed_resource_count = 0
         for evaluation_result in evaluation_results:
             if evaluation_result['ComplianceType'] == 'NON_COMPLIANT':
-                failed_count += 1
+                failed_resource_count += 1
 
             resource_info = evaluation_result['EvaluationResultIdentifier']['EvaluationResultQualifier']
             result_info = {
@@ -141,7 +141,7 @@ class AWSConfigManager(CollectorManager):
 
             results_info.append(result_info)
 
-        return results_info, failed_count
+        return results_info, failed_resource_count
 
     def _get_config_rule_map(self, rules: List[dict]) -> dict:
         rule_names = [rule['ConfigRuleName'] for rule in rules]

@@ -16,13 +16,18 @@ _METADATA = {
                             },
                             {
                                 'type': 'text',
-                                'key': 'data.source.description',
-                                'name': 'Description'
+                                'key': 'data.arn',
+                                'name': 'ARN'
                             },
                             {
                                 'type': 'text',
-                                'key': 'data.arn',
-                                'name': 'Config rule ARN'
+                                'key': 'data.source.owner_display',
+                                'name': 'Type'
+                            },
+                            {
+                                'type': 'text',
+                                'key': 'data.source.description',
+                                'name': 'Description'
                             },
                             {
                                 'type': 'text',
@@ -36,11 +41,6 @@ _METADATA = {
                                 'options': {
                                     'delimiter': '<br>'
                                 }
-                            },
-                            {
-                                'type': 'text',
-                                'key': 'data.source.owner_display',
-                                'name': 'Type'
                             },
                         ]
                     }
@@ -86,38 +86,28 @@ _METADATA = {
                             {
                                 'type': 'enum',
                                 'key': 'compliance_type',
+                                'name': 'Compliance',
                                 'options': {
-                                    'items': {
-                                        'COMPLIANT': {
-                                            'name': 'Compliant',
-                                            'type': 'state',
-                                            'options': {
-                                                'text_color': 'green.500',
-                                                'icon': {
-                                                    'color': 'green.500'
-                                                }
-                                            }
-                                        },
-                                        'NON_COMPLIANT': {
-                                            'name': 'Non Compliant',
-                                            'type': 'state',
-                                            'options': {
-                                                'text_color': 'red.500',
-                                                'icon': {
-                                                    'color': 'red.500'
-                                                }
-                                            }
-                                        },
-                                        'INSUFFICIENT_DATA': {
-                                            'name': 'Not Supported',
-                                            'type': 'state',
-                                            'options': {
-                                                'text_color': 'yellow.500',
-                                                'icon': {
-                                                    'color': 'yellow.500'
-                                                }
-                                            }
-                                        },
+                                    'COMPLIANT': {
+                                        'name': 'Compliant',
+                                        'type': 'badge',
+                                        'options': {
+                                            'background_color': 'indigo.500'
+                                        }
+                                    },
+                                    'NON_COMPLIANT': {
+                                        'name': 'Non Compliant',
+                                        'type': 'badge',
+                                        'options': {
+                                            'background_color': 'coral.500'
+                                        }
+                                    },
+                                    'INSUFFICIENT_DATA': {
+                                        'name': 'Not Supported',
+                                        'type': 'badge',
+                                        'options': {
+                                            'text_color': 'yellow.500'
+                                        }
                                     }
                                 }
                             },
