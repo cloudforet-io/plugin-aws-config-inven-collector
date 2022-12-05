@@ -5,8 +5,6 @@ from spaceone.core.error import *
 from spaceone.core.manager import BaseManager
 from cloudforet.plugin.model.plugin_info_model import PluginInfo, ResourceType
 from cloudforet.plugin.model.resource_info_model import ResourceInfo, State
-from cloudforet.plugin.model.cloud_service_model import CloudService
-from cloudforet.plugin.model.cloud_service_type_model import CloudServiceType
 from cloudforet.plugin.connector.aws_boto_connector import AWSBotoConnector
 
 _LOGGER = logging.getLogger(__name__)
@@ -70,21 +68,3 @@ class CollectorManager(BaseManager):
     def validate_response(resource_data):
         response = ResourceInfo(**resource_data)
         return response.dict()
-
-    def validate_cloud_service(self, resource_data):
-        cloud_service = CloudService(
-            name=resource_data['name'],
-            provider=self.provider,
-            cloud_service_group=self.cloud_service_group,
-            cloud_service_type=self.cloud_service_type,
-            data=resource_data['data'],
-            metadata=resource_data['metadata'],
-            ip_addresses=resource_data.get('ip_addresses'),
-            account=resource_data.get('account'),
-            instance_type=resource_data.get('instance_type'),
-            instance_size=resource_data.get('instance_size'),
-            region_code=resource_data.get('region_code'),
-            reference=resource_data.get('reference'),
-            tags=resource_data.get('tags')
-        )
-        return cloud_service.dict(exclude_defaults=True)

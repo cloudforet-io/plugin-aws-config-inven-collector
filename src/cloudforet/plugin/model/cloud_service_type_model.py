@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from enum import Enum
 
 
-class CloudServiceType(BaseModel):
+class BaseCloudServiceType(BaseModel):
     name: str
     group: str
     provider: str
@@ -11,5 +11,5 @@ class CloudServiceType(BaseModel):
     is_major: bool = False
     metadata: dict
     service_code: str = None
-    tags: dict = None
-    labels: List[str] = None
+    tags: dict = {}
+    labels: List[str] = []

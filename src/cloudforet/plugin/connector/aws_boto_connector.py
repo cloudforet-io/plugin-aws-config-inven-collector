@@ -61,6 +61,11 @@ class AWSBotoConnector(BaseConnector):
         response = ec2.describe_regions()
         return [region['RegionName'] for region in response['Regions']]
 
+    def get_account_id(self) -> str:
+        sts = self.session.client('sts')
+        response = sts.get_caller_identity()
+        return response.get('Account')
+
     @staticmethod
     def _check_secret_data(secret_data):
         if 'aws_access_key_id' not in secret_data:
