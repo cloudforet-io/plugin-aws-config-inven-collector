@@ -81,7 +81,6 @@ class CollectorService(BaseService):
 
         session = self.collector_mgr.create_session(options, secret_data, schema)
         regions = self.collector_mgr.list_regions()
-        regions = ['ap-northeast-2']
 
         aws_config_mgr: AWSConfigManager = self.locator.get_manager(AWSConfigManager, session=session)
 

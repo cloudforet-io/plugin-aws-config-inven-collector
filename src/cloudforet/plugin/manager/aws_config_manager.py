@@ -18,7 +18,7 @@ class AWSConfigManager(CollectorManager):
         self.aws_connector: AWSConfigConnector = self.locator.get_connector(AWSConfigConnector)
         self.aws_connector.session = session
         self.cloud_service_group = 'Compliance'
-        self.cloud_service_type = 'CIS AWS v1.4 Lv1'
+        self.cloud_service_type = 'CIS-AWS-1.4'
 
     def collect(self, options: dict, region_name: str) -> Generator[dict, None, None]:
         self.region_name = region_name

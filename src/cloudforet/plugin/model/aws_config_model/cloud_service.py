@@ -142,5 +142,5 @@ _METADATA = {
 class CloudService(BaseCloudService):
     provider: str = 'aws'
     cloud_service_group: str = 'Compliance'
-    cloud_service_type: str = 'CIS AWS v1.4 Lv1'
+    cloud_service_type: str = 'CIS-AWS-1.4'
     metadata: dict = _METADATA
