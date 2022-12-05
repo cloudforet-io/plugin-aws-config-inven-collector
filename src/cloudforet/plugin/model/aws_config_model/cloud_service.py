@@ -11,6 +11,11 @@ _METADATA = {
                         'fields': [
                             {
                                 'type': 'text',
+                                'key': 'data.source.description',
+                                'name': 'Description'
+                            },
+                            {
+                                'type': 'text',
                                 'key': 'data.name',
                                 'name': 'Name'
                             },
@@ -23,11 +28,6 @@ _METADATA = {
                                 'type': 'text',
                                 'key': 'data.source.owner_display',
                                 'name': 'Type'
-                            },
-                            {
-                                'type': 'text',
-                                'key': 'data.source.description',
-                                'name': 'Description'
                             },
                             {
                                 'type': 'text',
