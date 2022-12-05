@@ -119,8 +119,8 @@ class CloudServiceType(BaseCloudServiceType):
     name: str = 'CIS-AWS-1.4'
     group: str = 'Compliance'
     provider: str = 'aws'
-    is_primary: bool = False
-    is_major: bool = False
+    is_primary: bool = True
+    is_major: bool = True
     metadata: dict = _METADATA
     labels: List[str] = ['Security']
     tags: dict = {
