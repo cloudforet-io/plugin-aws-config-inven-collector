@@ -16,7 +16,7 @@ class BaseCloudService(BaseModel):
     ip_addresses: Optional[List[IPvAnyAddress]] = []
     account: str = None
     instance_type: str = None
-    instance_size: float = None
+    instance_size: float = 0
     region_code: str = None
     data: dict
     metadata: dict

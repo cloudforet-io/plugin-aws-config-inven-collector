@@ -50,7 +50,7 @@ class CollectorManager(BaseManager):
             'resource': resource_data
         })
 
-    def error_response(self, error: Exception) -> dict:
+    def error_response(self, error: Exception, resource_type: str = 'inventory.CloudService') -> dict:
         if not isinstance(error, ERROR_BASE):
             error = ERROR_UNKNOWN(message=error)
 
@@ -62,7 +62,8 @@ class CollectorManager(BaseManager):
             'resource': {
                 'provider': self.provider,
                 'cloud_service_group': self.cloud_service_group,
-                'cloud_service_type': self.cloud_service_type
+                'cloud_service_type': self.cloud_service_type,
+                'resource_type': resource_type
             }
         })
 
