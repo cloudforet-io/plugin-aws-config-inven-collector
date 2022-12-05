@@ -1,40 +1,65 @@
 import logging
+from typing import List
 import boto3
 
 from spaceone.core import utils
 from spaceone.core.connector import BaseConnector
-from spaceone.core.error import *
+from cloudforet.plugin.error.custom import *
 
 __all__ = ['AWSBotoConnector']
 
 _LOGGER = logging.getLogger(__name__)
+_DEFAULT_REGION = 'us-east-1'
 
 
 class AWSBotoConnector(BaseConnector):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.session = None
-        self.s3_client = None
-        self.s3_bucket = None
+        self._session = None
+        self._client = None
+
+    @property
+    def session(self):
+        return self._session
+
+    @session.setter
+    def session(self, value):
+        self._session = value
+
+    @property
+    def client(self):
+        return self._client
+
+    @client.setter
+    def client(self, value):
+        self._client = value
 
     def create_session(self, options: dict, secret_data: dict, schema: str):
         self._check_secret_data(secret_data)
 
-        self.s3_bucket = secret_data['aws_s3_bucket']
         aws_access_key_id = secret_data['aws_access_key_id']
         aws_secret_access_key = secret_data['aws_secret_access_key']
-        region_name = secret_data.get('region_name')
         role_arn = secret_data.get('role_arn')
         external_id = secret_data.get('external_id')
 
-        if role_arn:
-            self._create_session_aws_assume_role(aws_access_key_id, aws_secret_access_key, region_name,
-                                                 role_arn, external_id)
-        else:
-            self._create_session_aws_access_key(aws_access_key_id, aws_secret_access_key, region_name)
+        try:
+            if role_arn:
+                self._create_session_aws_assume_role(aws_access_key_id, aws_secret_access_key, role_arn, external_id)
+            else:
+                self._create_session_aws_access_key(aws_access_key_id, aws_secret_access_key)
+        except Exception as e:
+            raise ERROR_AWS_CONNECTION(reason=e)
 
-        self.s3_client = self.session.client('s3')
+        return self.session
+
+    def init_client(self, region_name: str):
+        raise NotImplementedError('Method not implemented!')
+
+    def list_regions(self) -> List[str]:
+        ec2 = self.session.client('ec2', region_name=_DEFAULT_REGION)
+        response = ec2.describe_regions()
+        return [region['RegionName'] for region in response['Regions']]
 
     @staticmethod
     def _check_secret_data(secret_data):
@@ -44,19 +69,15 @@ class AWSBotoConnector(BaseConnector):
         if 'aws_secret_access_key' not in secret_data:
             raise ERROR_REQUIRED_PARAMETER(key='secret_data.aws_secret_access_key')
 
-        if 'aws_s3_bucket' not in secret_data:
-            raise ERROR_REQUIRED_PARAMETER(key='secret_data.aws_s3_bucket')
-
-    def _create_session_aws_access_key(self, aws_access_key_id, aws_secret_access_key, region_name):
+    def _create_session_aws_access_key(self, aws_access_key_id, aws_secret_access_key):
         self.session = boto3.Session(aws_access_key_id=aws_access_key_id,
-                                     aws_secret_access_key=aws_secret_access_key,
-                                     region_name=region_name)
+                                     aws_secret_access_key=aws_secret_access_key)
 
         sts = self.session.client('sts')
         sts.get_caller_identity()
 
-    def _create_session_aws_assume_role(self, aws_access_key_id, aws_secret_access_key, region_name, role_arn, external_id):
-        self._create_session_aws_access_key(aws_access_key_id, aws_secret_access_key, region_name)
+    def _create_session_aws_assume_role(self, aws_access_key_id, aws_secret_access_key, role_arn, external_id):
+        self._create_session_aws_access_key(aws_access_key_id, aws_secret_access_key)
 
         sts = self.session.client('sts')
 
@@ -73,5 +94,4 @@ class AWSBotoConnector(BaseConnector):
 
         self.session = boto3.Session(aws_access_key_id=credentials['AccessKeyId'],
                                      aws_secret_access_key=credentials['SecretAccessKey'],
-                                     region_name=region_name,
                                      aws_session_token=credentials['SessionToken'])

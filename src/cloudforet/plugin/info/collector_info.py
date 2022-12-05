@@ -18,7 +18,7 @@ def ResourceInfo(resource_data):
         'message': resource_data.get('message', ''),
         'resource_type': resource_data['resource_type'],
         'match_rules': change_struct_type(resource_data.get('match_rules')),
-        'resource': change_struct_type(resource_data.get('resource')),
+        'resource': change_struct_type(resource_data.get('resource'))
     }
 
     return collector_pb2.ResourceInfo(**info)

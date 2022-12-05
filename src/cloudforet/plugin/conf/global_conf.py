@@ -1,4 +1,10 @@
 LOG = {
+    'loggers': {
+        'cloudforet': {
+            'level': 'DEBUG',
+            'handlers': ['console']
+        }
+    },
     'filters': {
         'masking': {
             'rules': {
