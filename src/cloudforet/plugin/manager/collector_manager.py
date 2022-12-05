@@ -41,10 +41,12 @@ class CollectorManager(BaseManager):
     def collect(self, options: dict, region_name: str) -> Generator[dict, None, None]:
         raise NotImplementedError('Method not implemented!')
 
-    def make_response(self, resource_data, resource_type: str = 'inventory.CloudService') -> dict:
+    def make_response(self, resource_data: dict, match_rules: dict,
+                      resource_type: str = 'inventory.CloudService') -> dict:
         return self.validate_response({
             'state': State.success,
             'resource_type': resource_type,
+            'match_rules': match_rules,
             'resource': resource_data
         })
 

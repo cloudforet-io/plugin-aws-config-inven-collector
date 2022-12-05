@@ -30,7 +30,9 @@ class AWSConfigManager(CollectorManager):
             self.aws_connector.init_client(region_name)
 
             cloud_service_type = CloudServiceType()
-            yield self.make_response(cloud_service_type.dict())
+            yield self.make_response(cloud_service_type.dict(),
+                                     {'1': ['name', 'group', 'provider']},
+                                     resource_type='inventory.CloudServiceType')
 
             account_id = self.aws_connector.get_account_id()
             pack_map = self._get_conformance_pack_map(allowed_pack_names)
@@ -41,7 +43,14 @@ class AWSConfigManager(CollectorManager):
 
                 for resource_data in self._list_conformance_rules(account_id, pack_name, pack_info,
                                                                   evaluation_results_map):
-                    yield self.make_response(resource_data)
+                    yield self.make_response(resource_data,
+                                             {'1': [
+                                                 'reference.resource_id',
+                                                 'provider',
+                                                 'cloud_service_type',
+                                                 'cloud_service_group',
+                                                 'account'
+                                             ]})
                     count += 1
 
             _LOGGER.debug(f'[AWSConfigManager.collect] ({region_name}) resource count: {count}')
