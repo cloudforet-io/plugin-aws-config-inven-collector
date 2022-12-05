@@ -147,6 +147,6 @@ class CloudServiceType(BaseCloudServiceType):
     metadata: dict = _METADATA
     labels: List[str] = ['Security']
     tags: dict = {
-        'spaceone:icon': 'https://spaceone-custom-assets.s3.ap-northeast-2.amazonaws.com/console-assets/icons/cloud-services/aws/AWS-Identity-and-Access-Management_IAM.svg',
+        'spaceone:icon': 'https://spaceone-custom-assets.s3.ap-northeast-2.amazonaws.com/console-assets/icons/cloud-services/aws/AWS-Config.svg',
         'spaceone:display_name': 'CIS AWS v1.4'
     }
